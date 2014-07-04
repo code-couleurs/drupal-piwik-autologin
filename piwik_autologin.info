@@ -1,0 +1,27 @@
+; @file piwik-autologin.info
+; @brief .info file for the Piwik Autologin Drupal module.
+; @author Romain Ducher <r.ducher@agence-codecouleurs.fr>
+; @license https://www.gnu.org/licenses/gpl-3.0.txt
+; @section LICENSE
+;
+; Copyright 2014 Code Couleurs
+;
+; This file is part of Piwik Autologin.
+; 
+; Piwik Autologin is free software: you can redistribute it and/or modify it
+; under the terms of the GNU General Public License as published by the Free
+; Software Foundation, either version 3 of the License, or (at your option)
+; any later version.
+;
+; Piwik Autologin is distributed in the hope that it will be useful, but
+; WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+; or FITNESS OR A PARTICULAR PURPOSE. See the GNU General Public License for
+; more details.
+;
+; You should have received a copy of the GNU General Public License along with
+; Piwik Autologin. If not, see <http://www.gnu.org/licenses/>.
+name = Piwik Autologin
+description = Piwik Autologin is a Drupal module which logs you instantly into Piwik when you log into Drupal.
+core = 7.x
+package = Login
+files[] = piwik-autologin.module
