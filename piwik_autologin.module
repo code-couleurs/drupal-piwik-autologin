@@ -23,3 +23,12 @@
  * You should have received a copy of the GNU General Public License along with
  * Piwik Autologin. If not, see <http://www.gnu.org/licenses/>.
  */
+
+if (!class_exists("\cc_piwik\CC_Piwik")) {
+  require_once ('libs/cc_piwik/cc_piwik.php');
+}
+
+function piwik_autologin_user_login() {
+  $cc_piwik = new \cc_piwik\CC_Piwik('');
+  error_log("Le cc piwik : ".var_export($cc_piwik, true));
+}

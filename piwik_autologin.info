@@ -25,3 +25,4 @@ description = Piwik Autologin is a Drupal module which logs you instantly into P
 core = 7.x
 package = Login
 files[] = piwik-autologin.module
+files[] = libs/cc_piwik/cc_piwik.php
