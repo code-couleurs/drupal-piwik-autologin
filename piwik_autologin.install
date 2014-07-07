@@ -1,8 +1,8 @@
 <?php
 /**
  * @file
- * piwik-autologin.module
- * @brief .module file for the Piwik Autologin Drupal module.
+ * piwik_autologin.install
+ * @brief Piwik Autologin's installation file.
  * @author Romain Ducher <r.ducher@agence-codecouleurs.fr>
  * @license https://www.gnu.org/licenses/gpl-3.0.txt
  * @section LICENSE
@@ -25,24 +25,39 @@
  * Piwik Autologin. If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!class_exists('\cc_piwik\CC_Piwik')) {
-  require_once 'libs/cc_piwik/cc_piwik.php';
+/**
+ * Installing Piwik Autologin.
+ */
+function piwik_autologin_install() {
+  // TODO : create the table
 }
 
 /**
- * Implementing "hook_menu".
+ * Enabling the Piwik Autologin module.
  */
-function piwik_autologin_menu() {
-  // Configuration menu
-  $items['admin/config/piwik_autologin'] = array(
-    'title' => 'Piwik Autologin Configuration',
-    'description' => 'Configuring Piwik Autologin',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('piwik_autologin_admin_form'),
-    'access arguments' => array('administer site configuration'),
-    'file' => 'piwik_autologin.admin.inc',
-    'type' => MENU_LOCAL_TASK,
-  );
+function piwik_autologin_enable() {
+}
 
-  return $items;
+/**
+ * Disabling the Piwik Autologin module.
+ */
+function piwik_autologin_disable() {
+}
+
+/**
+ * Uninstalling Piwik Autologin.
+ */
+function piwik_autologin_uninstall() {
+  // Delete module configuration.
+  variable_del('piwik_autologin_piwik_url');
+  variable_del('piwik_autologin_idsite');
+
+  // TODO : drop the table
+}
+
+/**
+ * Creating databases for the module.
+ */
+function piwik_autologin_schema() {
+  // TODO
 }
