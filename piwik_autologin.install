@@ -26,22 +26,52 @@
  */
 
 /**
- * Installing Piwik Autologin.
+ * Creating databases for the module.
  */
-function piwik_autologin_install() {
-  // TODO : create the table
-}
+function piwik_autologin_schema() {
+  $schema['piwik_autologin_piwik_users'] = array(
+    'description' => 'Piwik equivalents of Drupal users',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'userlogin' => array(
+        'description' => 'User\'s login on Piwik',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+      ),
+      'md5password' => array(
+        'description' => 'MD5 User\'s password on Piwik',
+        'type' => 'char',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'Drupal user ID. Foreign key which references {users}.uid',
+        'type' => 'int',
+        'size' => 'normal',
+        'length' => 10,
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'foreign key' => array(
+      'drupal_uid' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      )
+    ),
+    'unique key' => array(
+      'unique_piwik_user' => array('userlogin'),
+    ),
+  );
 
-/**
- * Enabling the Piwik Autologin module.
- */
-function piwik_autologin_enable() {
-}
-
-/**
- * Disabling the Piwik Autologin module.
- */
-function piwik_autologin_disable() {
+  return $schema;
 }
 
 /**
@@ -51,13 +81,4 @@ function piwik_autologin_uninstall() {
   // Delete module configuration.
   variable_del('piwik_autologin_piwik_url');
   variable_del('piwik_autologin_idsite');
-
-  // TODO : drop the table
-}
-
-/**
- * Creating databases for the module.
- */
-function piwik_autologin_schema() {
-  // TODO
 }

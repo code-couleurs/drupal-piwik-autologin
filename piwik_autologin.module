@@ -33,7 +33,7 @@ if (!class_exists('\cc_piwik\CC_Piwik')) {
  * Implementing "hook_menu".
  */
 function piwik_autologin_menu() {
-  // Configuration menu
+  // Configuration menu.
   $items['admin/config/piwik_autologin'] = array(
     'title' => 'Piwik Autologin Configuration',
     'description' => 'Configuring Piwik Autologin',

@@ -57,7 +57,7 @@ function piwik_autologin_admin_form($form, &$form_state) {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => 'Mettre à jour',
+    '#value' => 'Update',
     '#submit' => array('piwik_autologin_admin_submit'),
   );
 
