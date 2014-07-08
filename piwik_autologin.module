@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * piwik-autologin.module
+ * piwik_autologin.module
  * @brief .module file for the Piwik Autologin Drupal module.
  * @author Romain Ducher <r.ducher@agence-codecouleurs.fr>
  * @license https://www.gnu.org/licenses/gpl-3.0.txt
@@ -25,8 +25,8 @@
  * Piwik Autologin. If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!class_exists('\cc_piwik\CC_Piwik')) {
-  require_once 'libs/cc_piwik/cc_piwik.php';
+if (!class_exists('PiwikUser')) {
+  require_once 'piwik_autologin.piwik_user.inc';
 }
 
 /**
@@ -45,4 +45,17 @@ function piwik_autologin_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implementing hook_user_login.
+ *
+ * Retrieve the Logme URL for Piwik
+ * @see https://api.drupal.org/api/drupal/modules!user!user.api.php/function/hook_user_login/7
+ */
+function piwik_autologin_user_login(&$edit, $account) {
+  if ($piwik_user = \piwik_autologin\PiwikUser::getByDrupalUserID($account->uid)) {
+    // Saving logme url.
+    $_SESSION['piwik_autologin_logme_url'] = $piwik_user->getLogmeURL();
+  }
 }

@@ -1,4 +1,4 @@
-; @file piwik-autologin.info
+; @file piwik_autologin.info
 ; @brief .info file for the Piwik Autologin Drupal module.
 ; @author Romain Ducher <r.ducher@agence-codecouleurs.fr>
 ; @license https://www.gnu.org/licenses/gpl-3.0.txt
@@ -25,4 +25,5 @@ description = Piwik Autologin is a Drupal module which logs you instantly into P
 core = 7.x
 package = Login
 files[] = libs/cc_piwik/cc_piwik.php
+files[] = piwik_autologin.piwik_user.inc
 configure = admin/config/piwik_autologin
