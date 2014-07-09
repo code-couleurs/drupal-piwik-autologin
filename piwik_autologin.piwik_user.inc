@@ -72,90 +72,6 @@ class PiwikUser {
   }
 
   /**
-   * Retrieving a Piwik User with a Drupal User ID.
-   *
-   * @param int $uid
-   *   Drupal user ID.
-   *
-   * @return NULL|PiwikUser
-   *   The corresponding Piwik User or NULL if it does not exist.
-   */
-  public static function getByDrupalUserID($uid) {
-    $result = db_query(sprintf(
-      "SELECT * FROM %s where uid = %d",
-      static::$tableName,
-      intval($uid)
-    ))->fetchObject();
-
-    if ($result) {
-      return new PiwikUser($result->userlogin, $result->md5password, $result->uid, $result->id, FALSE);
-    }
-    else {
-      return NULL;
-    }
-  }
-
-  /**
-   * Checks if a Drupal user has got a Piwik equivalent.
-   *
-   * @param int $uid
-   *   Drupal user ID.
-   */
-  public static function piwikUserExists($uid) {
-    $result = db_query(sprintf(
-      "SELECT COUNT(*) FROM %s where uid = %d",
-      static::$tableName,
-      intval($uid)
-    ))->fetchField();
-
-    return $result == 1;
-  }
-
-  /**
-   * Converting the object into an array.
-   *
-   * @param bool $with_db_id
-   *   TRUE if the database ID has to be included in the array FALSE otherwise.
-   *
-   * @return array
-   *   Array whose keys are attributes names and whose values are their values.
-   */
-  public function toArray($with_db_id = TRUE) {
-    $res = array(
-      'userlogin' => $this->userlogin,
-      'md5password' => $this->md5password,
-      'uid' => $this->uid,
-    );
-
-    if ($with_db_id) {
-      $res['id'] = $this->id;
-    }
-
-    return $res;
-  }
-
-  /**
-   * Building an URL to sign in a user to Piwik using Piwik's logme feature.
-   *
-   * It just builds the URL following Piwik inscructions for logme. This method
-   * does not ensure that the URL is valid or that the user will be logged into
-   * Piwik using it. However it should be OK if all the Piwik requirements
-   * are respected.
-   *
-   * @see http://piwik.org/faq/how-to/faq_30/
-   * @return string
-   *   The corresponding logme URL
-   */
-  public function getLogmeURL() {
-    if (!class_exists('\cc_piwik\CC_Piwik')) {
-      require_once 'libs/cc_piwik/cc_piwik.php';
-    }
-
-    $piwik = new \cc_piwik\CC_Piwik(variable_get('piwik_autologin_piwik_url', ''));
-    return $piwik->get_logme_url($this->userlogin, $this->md5password, variable_get('site_name', ''), get_piwik_idsite(), FALSE);
-  }
-
-  /**
    * Saving a Piwik user in the database.
    *
    * @return bool
@@ -213,5 +129,106 @@ class PiwikUser {
       watchdog_exception('user', $e);
       return FALSE;
     }
+  }
+
+  /**
+   * Retrieving a Piwik User with a Drupal User ID.
+   *
+   * @param int $uid
+   *   Drupal user ID.
+   *
+   * @return NULL|PiwikUser
+   *   The corresponding Piwik User or NULL if it does not exist.
+   */
+  public static function getByDrupalUserID($uid) {
+    $result = db_query(sprintf(
+      "SELECT * FROM %s where uid = %d",
+      static::$tableName,
+      intval($uid)
+    ))->fetchObject();
+
+    if ($result) {
+      return new PiwikUser($result->userlogin, $result->md5password, $result->uid, $result->id, FALSE);
+    }
+    else {
+      return NULL;
+    }
+  }
+
+  /**
+   * Retrieving a Piwik equivalent of the connected user.
+   *
+   * @return NULL|PiwikUser
+   *   The Piwik equivalent of the connected user.
+   */
+  public static function getByConnectedUser() {
+    global $user;
+    return static::getByDrupalUserID($user->uid);
+  }
+
+  /**
+   * Checks if a Drupal user has got a Piwik equivalent.
+   *
+   * @param int $uid
+   *   Drupal user ID.
+   */
+  public static function piwikUserExists($uid) {
+    $result = db_query(sprintf(
+      "SELECT COUNT(*) FROM %s where uid = %d",
+      static::$tableName,
+      intval($uid)
+    ))->fetchField();
+
+    return $result == 1;
+  }
+
+  /**
+   * Converting the object into an array.
+   *
+   * @param bool $with_db_id
+   *   TRUE if the database ID has to be included in the array FALSE otherwise.
+   *
+   * @return array
+   *   Array whose keys are attributes names and whose values are their values.
+   */
+  public function toArray($with_db_id = TRUE) {
+    $res = array(
+      'userlogin' => $this->userlogin,
+      'md5password' => $this->md5password,
+      'uid' => $this->uid,
+    );
+
+    if ($with_db_id) {
+      $res['id'] = $this->id;
+    }
+
+    return $res;
+  }
+
+  /**
+   * Building an URL to sign in a user to Piwik using Piwik's logme feature.
+   *
+   * It just builds the URL following Piwik inscructions for logme. This method
+   * does not ensure that the URL is valid or that the user will be logged into
+   * Piwik using it. However it should be OK if all the Piwik requirements
+   * are respected.
+   *
+   * @see http://piwik.org/faq/how-to/faq_30/
+   * @return string
+   *   The corresponding logme URL
+   */
+  public function getLogmeURL() {
+    $piwik = get_piwik_instance();
+    return $piwik->get_logme_url($this->userlogin, $this->md5password, variable_get('site_name', ''), get_piwik_idsite(), FALSE);
+  }
+
+  /**
+   * Is the Piwik user empty? It is empty if its login is an empty string.
+   *
+   * @return bool
+   *   TRUE if the user is empty, FALSE otherwise.
+   */
+  public function isEmpty() {
+    return $this->userlogin == '';
   }
 }

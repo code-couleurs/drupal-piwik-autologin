@@ -51,13 +51,39 @@ function set_module_configuration_menu(&$items) {
 }
 
 /**
+ * Link to Piwik in the Navigation menu.
+ *
+ * @param array $items
+ *   Menu items
+ */
+function set_piwik_navigation_link(&$items) {
+  // Ensure that the user is allowed to show Piwik statistics.
+  if (!get_show_piwik_navigation_link()) {
+    return;
+  }
+
+  // Piwik navigation menu.
+  $items['navigation/piwik'] = array(
+    'title' => 'Piwik',
+    'description' => 'Show the website statistics on Piwik',
+    'page callback' => '\piwik_autologin\go_to_piwik',
+    'access callback' => TRUE,
+    'menu_name' => 'navigation',
+    'type' => MENU_NORMAL_ITEM,
+  );
+}
+
+/**
  * Setting a session variable for the logme URL.
  *
  * @param int $uid
  *   Drupal user ID.
  */
 function set_logme_url($uid) {
-  if ($piwik_user = \piwik_autologin\PiwikUser::getByDrupalUserID($uid)) {
+  $piwik_user = PiwikUser::getByDrupalUserID($uid);
+  $logme = ($piwik_user AND !$piwik_user->isEmpty());
+  set_show_piwik_navigation_link($logme);
+  if ($logme) {
     // Saving logme url.
     $_SESSION['piwik_autologin_logme_url'] = $piwik_user->getLogmeURL();
   }
@@ -121,11 +147,6 @@ function embed_piwik_iframe(&$page) {
  */
 function create_piwik_autologin_db_schema() {
   $table_name = 'piwik_autologin_piwik_users';
-
-  if (db_table_exists($table_name)) {
-    drupal_set_message("The database table required by the Piwik Autologin module already exists. The module might not work properly.");
-    return array();
-  }
 
   $schema[$table_name] = array(
     'description' => 'Piwik equivalents of Drupal users',

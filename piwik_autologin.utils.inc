@@ -70,3 +70,49 @@ function get_piwik_idsite() {
 function set_piwik_idsite($new_idsite) {
   return variable_set('piwik_autologin_idsite', intval($new_idsite));
 }
+
+/**
+ * Redirect to Piwik.
+ */
+function go_to_piwik() {
+  header('Location: ' . get_piwik_url());
+  exit;
+}
+
+/**
+ * Getting stuff to communicate with the Piwik API.
+ *
+ * This function is based on CC Piwik.
+ *
+ * @see http://github.com/code-couleurs/cc_piwik
+ * @return \cc_piwik\CC_Piwik
+ *   A CC Piwik instance.
+ */
+function get_piwik_instance() {
+  if (!class_exists('\cc_piwik\CC_Piwik')) {
+    require_once 'libs/cc_piwik/cc_piwik.php';
+  }
+
+  return new \cc_piwik\CC_Piwik(get_piwik_url());
+}
+
+/**
+ * Knowing if the link to Piwik has to be shown in the navigation menu.
+ *
+ * @return bool
+ *   TRUE if it has to be shown, FALSE otherwise.
+ */
+function get_show_piwik_navigation_link() {
+  return (isset($_SESSION['show_piwik_navi_link']) AND $_SESSION['show_piwik_navi_link']);
+}
+
+/**
+ * Setting a new value for determining if the link to Piwik has to be shown in the navigation menu.
+ *
+ * @param bool $newval
+ *   New value for showing the link to Piwik in the navigation menu. TRUE if the
+ *   link has to be shown, FALSE otherwise.
+ */
+function set_show_piwik_navigation_link($newval) {
+  $_SESSION['show_piwik_navi_link'] = $newval;
+}

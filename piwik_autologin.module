@@ -37,6 +37,7 @@ if (!class_exists('PiwikUser')) {
 function piwik_autologin_menu() {
   $items = array();
   \piwik_autologin\set_module_configuration_menu($items);
+  \piwik_autologin\set_piwik_navigation_link($items);
   return $items;
 }
 
@@ -48,6 +49,17 @@ function piwik_autologin_menu() {
  */
 function piwik_autologin_user_login(&$edit, $account) {
   \piwik_autologin\set_logme_url($account->uid);
+  // Menus depends on the connected user. Refresh them.
+  menu_rebuild();
+}
+
+/**
+ * Implementing hook_user_logout.
+ */
+function piwik_autologin_user_logout($account) {
+  // Disable the link to Piwik.
+  \piwik_autologin\set_show_piwik_navigation_link(FALSE);
+  menu_rebuild();
 }
 
 /**
