@@ -25,6 +25,10 @@
  * Piwik Autologin. If not, see <http://www.gnu.org/licenses/>.
  */
 
+if (!function_exists('\piwik_autologin\get_piwik_idsite')) {
+  require_once 'piwik_autologin.utils.inc';
+}
+
 /**
  * Filling the form for module configuration.
  *
@@ -41,7 +45,7 @@ function piwik_autologin_admin_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => 'Piwik URL',
     '#description' => 'URL of the Piwik installation which tracks the website.',
-    '#default_value' => variable_get('piwik_autologin_piwik_url', ''),
+    '#default_value' => \piwik_autologin\get_piwik_url(),
     '#size' => 50,
     '#required' => TRUE,
   );
@@ -50,7 +54,7 @@ function piwik_autologin_admin_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => 'Website ID',
     '#description' => 'Website ID of the site on the Piwik installation which tracks the website.',
-    '#default_value' => variable_get('piwik_autologin_idsite', ''),
+    '#default_value' => \piwik_autologin\get_piwik_idsite(),
     '#size' => 50,
     '#required' => TRUE,
   );
@@ -80,7 +84,7 @@ function piwik_autologin_admin_submit($form, &$form_state) {
     $error_messages[] = 'Cannot retrieve the Piwik URL';
   }
   elseif (filter_var($form_state['values']['piwik_url'], FILTER_VALIDATE_URL)) {
-    variable_set('piwik_autologin_piwik_url', $form_state['values']['piwik_url']);
+    \piwik_autologin\set_piwik_url($form_state['values']['piwik_url']);
   }
   else {
     $error_messages[] = sprintf("%s is not a valid URL.", $form_state['values']['piwik_url']);
@@ -88,7 +92,7 @@ function piwik_autologin_admin_submit($form, &$form_state) {
 
   // Store website ID on Piwik.
   if (isset($form_state['values']['idsite']) AND is_numeric($form_state['values']['idsite'])) {
-    variable_set('piwik_autologin_idsite', intval($form_state['values']['idsite']));
+    \piwik_autologin\set_piwik_idsite($form_state['values']['idsite']);
   }
   else {
     $error_messages[] = 'Website ID on Piwik has to be an integer value.';

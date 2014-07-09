@@ -25,60 +25,18 @@
  * Piwik Autologin. If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once 'piwik_autologin.backend.inc';
+
 /**
- * Creating databases for the module.
+ * Implementing hook_schema.
  */
 function piwik_autologin_schema() {
-  $schema['piwik_autologin_piwik_users'] = array(
-    'description' => 'Piwik equivalents of Drupal users',
-    'fields' => array(
-      'id' => array(
-        'description' => 'Primary key',
-        'type' => 'serial',
-        'not null' => TRUE,
-        'unsigned' => TRUE,
-      ),
-      'userlogin' => array(
-        'description' => 'User\'s login on Piwik',
-        'type' => 'varchar',
-        'length' => 100,
-        'not null' => TRUE,
-      ),
-      'md5password' => array(
-        'description' => 'MD5 User\'s password on Piwik',
-        'type' => 'char',
-        'length' => 32,
-        'not null' => TRUE,
-      ),
-      'uid' => array(
-        'description' => 'Drupal user ID. Foreign key which references {users}.uid',
-        'type' => 'int',
-        'size' => 'normal',
-        'length' => 10,
-        'not null' => TRUE,
-        'unsigned' => TRUE,
-      ),
-    ),
-    'primary key' => array('id'),
-    'foreign key' => array(
-      'drupal_uid' => array(
-        'table' => 'users',
-        'columns' => array('uid' => 'uid'),
-      )
-    ),
-    'unique key' => array(
-      'unique_piwik_user' => array('userlogin'),
-    ),
-  );
-
-  return $schema;
+  return \piwik_autologin\create_piwik_autologin_db_schema();
 }
 
 /**
- * Uninstalling Piwik Autologin.
+ * Implementing hook_uninstall.
  */
 function piwik_autologin_uninstall() {
-  // Delete module configuration.
-  variable_del('piwik_autologin_piwik_url');
-  variable_del('piwik_autologin_idsite');
+  \piwik_autologin\uninstall_piwik_autologin();
 }

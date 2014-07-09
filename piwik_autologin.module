@@ -25,6 +25,8 @@
  * Piwik Autologin. If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once 'piwik_autologin.backend.inc';
+
 if (!class_exists('PiwikUser')) {
   require_once 'piwik_autologin.piwik_user.inc';
 }
@@ -33,17 +35,8 @@ if (!class_exists('PiwikUser')) {
  * Implementing "hook_menu".
  */
 function piwik_autologin_menu() {
-  // Configuration menu.
-  $items['admin/config/piwik_autologin'] = array(
-    'title' => 'Piwik Autologin Configuration',
-    'description' => 'Configuring Piwik Autologin',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('piwik_autologin_admin_form'),
-    'access arguments' => array('administer site configuration'),
-    'file' => 'piwik_autologin.admin.inc',
-    'type' => MENU_LOCAL_TASK,
-  );
-
+  $items = array();
+  \piwik_autologin\set_module_configuration_menu($items);
   return $items;
 }
 
@@ -54,8 +47,15 @@ function piwik_autologin_menu() {
  * @see https://api.drupal.org/api/drupal/modules!user!user.api.php/function/hook_user_login/7
  */
 function piwik_autologin_user_login(&$edit, $account) {
-  if ($piwik_user = \piwik_autologin\PiwikUser::getByDrupalUserID($account->uid)) {
-    // Saving logme url.
-    $_SESSION['piwik_autologin_logme_url'] = $piwik_user->getLogmeURL();
-  }
+  \piwik_autologin\set_logme_url($account->uid);
+}
+
+/**
+ * Implementing hook_page_build.
+ *
+ * @param array $page
+ *   Page to build.
+ */
+function piwik_autologin_page_build(&$page) {
+  \piwik_autologin\embed_piwik_iframe($page);
 }

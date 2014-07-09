@@ -2,7 +2,7 @@
 /**
  * @file
  * piwik_autologin.piwik_users.inc
- * @brief Utilities for retrieving Piwik datas.
+ * @brief Representing a Piwik user on Drupal.
  * @author Romain Ducher <r.ducher@agence-codecouleurs.fr>
  * @license https://www.gnu.org/licenses/gpl-3.0.txt
  * @section LICENSE
@@ -26,6 +26,10 @@
  */
 
 namespace piwik_autologin;
+
+if (!function_exists('\piwik_autologin\get_piwik_idsite')) {
+  require_once 'piwik_autologin.utils.inc';
+}
 
 /**
  * Representing a Piwik user.
@@ -77,10 +81,11 @@ class PiwikUser {
    *   The corresponding Piwik User or NULL if it does not exist.
    */
   public static function getByDrupalUserID($uid) {
-    $result = db_select(static::$tableName)
-      ->fields(static::$tableName)
-      ->condition('uid', intval($uid), '=')
-      ->execute()->fetchObject();
+    $result = db_query(sprintf(
+      "SELECT * FROM %s where uid = %d",
+      static::$tableName,
+      intval($uid)
+    ))->fetchObject();
 
     if ($result) {
       return new PiwikUser($result->userlogin, $result->md5password, $result->uid, $result->id, FALSE);
@@ -88,6 +93,22 @@ class PiwikUser {
     else {
       return NULL;
     }
+  }
+
+  /**
+   * Checks if a Drupal user has got a Piwik equivalent.
+   *
+   * @param int $uid
+   *   Drupal user ID.
+   */
+  public static function piwikUserExists($uid) {
+    $result = db_query(sprintf(
+      "SELECT COUNT(*) FROM %s where uid = %d",
+      static::$tableName,
+      intval($uid)
+    ))->fetchField();
+
+    return $result == 1;
   }
 
   /**
@@ -131,7 +152,7 @@ class PiwikUser {
     }
 
     $piwik = new \cc_piwik\CC_Piwik(variable_get('piwik_autologin_piwik_url', ''));
-    return $piwik->get_logme_url($this->userlogin, $this->md5password, '', variable_get('piwik_autologin_idsite', 0), FALSE);
+    return $piwik->get_logme_url($this->userlogin, $this->md5password, variable_get('site_name', ''), get_piwik_idsite(), FALSE);
   }
 
   /**
