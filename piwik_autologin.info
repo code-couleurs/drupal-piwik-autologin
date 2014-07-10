@@ -26,4 +26,5 @@ core = 7.x
 package = Login
 files[] = libs/cc_piwik/cc_piwik.php
 files[] = piwik_autologin.piwik_user.inc
+files[] = piwik_autologin.session.inc
 configure = admin/config/piwik_autologin

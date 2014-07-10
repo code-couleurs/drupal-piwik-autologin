@@ -95,24 +95,3 @@ function get_piwik_instance() {
 
   return new \cc_piwik\CC_Piwik(get_piwik_url());
 }
-
-/**
- * Knowing if the link to Piwik has to be shown in the navigation menu.
- *
- * @return bool
- *   TRUE if it has to be shown, FALSE otherwise.
- */
-function get_show_piwik_navigation_link() {
-  return (isset($_SESSION['show_piwik_navi_link']) AND $_SESSION['show_piwik_navi_link']);
-}
-
-/**
- * Setting a new value for determining if the link to Piwik has to be shown in the navigation menu.
- *
- * @param bool $newval
- *   New value for showing the link to Piwik in the navigation menu. TRUE if the
- *   link has to be shown, FALSE otherwise.
- */
-function set_show_piwik_navigation_link($newval) {
-  $_SESSION['show_piwik_navi_link'] = $newval;
-}

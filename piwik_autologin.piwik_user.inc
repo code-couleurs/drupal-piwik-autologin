@@ -72,6 +72,68 @@ class PiwikUser {
   }
 
   /**
+   * Getter for $this->userlogin.
+   *
+   * @return string
+   *   $this->userlogin.
+   */
+  public function getUserlogin() {
+    return $this->userlogin;
+  }
+
+  /**
+   * Setter for $this->userlogin.
+   *
+   * @param string $new_userlogin
+   *   New value for $this->userlogin.
+   */
+  public function setUserlogin($new_userlogin) {
+    $this->userlogin = $new_userlogin;
+  }
+
+  /**
+   * Getter for $this->md5password.
+   *
+   * @return string
+   *   $this->md5password.
+   */
+  public function getMD5Password() {
+    return $this->md5password;
+  }
+
+  /**
+   * Setter for $this->md5password.
+   *
+   * @param string $new_password
+   *   New value for $this->md5password.
+   * @param bool $is_password_clear
+   *   TRUE if the password is clear, FALSE if it is MD5-encoded.
+   */
+  public function setMD5Password($new_password, $is_password_clear) {
+    $this->md5password = $is_password_clear ? md5($new_password) : $new_password;
+  }
+
+  /**
+   * Getter for $this->uid.
+   *
+   * @return int
+   *   $this->uid.
+   */
+  public function getDrupalUID() {
+    return $this->uid;
+  }
+
+  /**
+   * Setter for $this->uid.
+   *
+   * @param int $new_uid
+   *   New value for $this->uid.
+   */
+  public function setDrupalUID($new_uid) {
+    $this->uid = $new_uid;
+  }
+
+  /**
    * Saving a Piwik user in the database.
    *
    * @return bool
@@ -92,17 +154,15 @@ class PiwikUser {
   /**
    * Updating a Piwik user in the database.
    *
-   * @return bool
-   *   TRUE if it updates only the desired Piwik user in the database,
-   *   FALSE otherwise.
+   * @return bool|int
+   *   The db_update result or FALSE if an exception occurs.
    */
   public function update() {
     try {
-      $update_pu = db_update(static::$tableName)
+      return db_update(static::$tableName)
         ->fields($this->toArray(FALSE))
         ->condition('id', $this->id, '=')
-        ->execute()->fetchField();
-      return $update_pu == 1;
+        ->execute();
     }
     catch (Exception $e) {
       // Logging the exception.
@@ -114,15 +174,14 @@ class PiwikUser {
   /**
    * Deleting a Piwik user in the database.
    *
-   * @return mixed
-   *   The db_delete result.
+   * @return bool|mixed
+   *   The db_delete result or FALSE if an exception occurs.
    */
   public function delete() {
     try {
-      $delete_pu = db_delete(static::$tableName)
+      return db_delete(static::$tableName)
         ->condition('id', $this->id, '=')
-        ->execute()->fetchField() == 1;
-      return $delete_pu == 1;
+        ->execute();
     }
     catch (Exception $e) {
       // Logging the exception.
@@ -229,6 +288,20 @@ class PiwikUser {
    *   TRUE if the user is empty, FALSE otherwise.
    */
   public function isEmpty() {
-    return $this->userlogin == '';
+    return empty($this->userlogin) OR $this->md5password == md5('');
+  }
+
+  /**
+   * Retrieving a Piwik userlogin with a Drupal user ID.
+   *
+   * @param int $drupal_uid
+   *   Drupal user ID.
+   *
+   * @return NULL|string
+   *   The correspoding userlogin if the Piwik user exists, NULL otherwise.
+   */
+  public static function getUserloginByDrupalUID($drupal_uid) {
+    $piwik_user = static::getByDrupalUserID($drupal_uid);
+    return is_null($piwik_user) ? NULL : $piwik_user->userlogin;
   }
 }

@@ -35,8 +35,16 @@ function piwik_autologin_schema() {
 }
 
 /**
+ * Implementing hook_modules_disabled.
+ */
+function piwik_autologin_modules_disabled() {
+  \piwik_autologin\Session::erase();
+}
+
+/**
  * Implementing hook_uninstall.
  */
 function piwik_autologin_uninstall() {
   \piwik_autologin\uninstall_piwik_autologin();
+  \piwik_autologin\Session::erase();
 }

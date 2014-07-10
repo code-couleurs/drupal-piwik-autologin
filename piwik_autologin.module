@@ -27,10 +27,6 @@
 
 require_once 'piwik_autologin.backend.inc';
 
-if (!class_exists('PiwikUser')) {
-  require_once 'piwik_autologin.piwik_user.inc';
-}
-
 /**
  * Implementing "hook_menu".
  */
@@ -58,7 +54,8 @@ function piwik_autologin_user_login(&$edit, $account) {
  */
 function piwik_autologin_user_logout($account) {
   // Disable the link to Piwik.
-  \piwik_autologin\set_show_piwik_navigation_link(FALSE);
+  \piwik_autologin\Session::setShowNaviLink(FALSE);
+  // Menus depends on the connected user. Refresh them.
   menu_rebuild();
 }
 
@@ -70,4 +67,78 @@ function piwik_autologin_user_logout($account) {
  */
 function piwik_autologin_page_build(&$page) {
   \piwik_autologin\embed_piwik_iframe($page);
+}
+
+/**
+ * Implementing hook_form_FORM_ID_alter for user_register_form (hook_form_user_register_form_alter).
+ *
+ * @param array $form
+ *   The form.
+ * @param array $form_state
+ *   Form state.
+ * @param string $form_id
+ *   The form ID (here 'user_register_form').
+ */
+function piwik_autologin_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  // Additional fields for Piwik.
+  \piwik_autologin\add_piwik_user_fields($form);
+}
+
+/**
+ * Implementing hook_form_FORM_ID_alter for user_profile_form (hook_form_user_profile_form_alter).
+ *
+ * @param array $form
+ *   The form.
+ * @param array $form_state
+ *   Form state.
+ * @param string $form_id
+ *   The form ID (here 'user_profile_form').
+ */
+function piwik_autologin_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  // Additional fields for Piwik.
+  \piwik_autologin\edit_piwik_user_fields($form, $form['#user']->uid);
+}
+
+/**
+ * Implementing hook_user_insert.
+ *
+ * @param array $edit
+ *   Submitted values to create the user.
+ * @param array $account
+ *   User to insert's account informations.
+ * @param string $category
+ *   The active category of user information being edited.
+ */
+function piwik_autologin_user_insert(&$edit, $account, $category) {
+  // Adding the Piwik equivalent in the Drupal database.
+  if ($category == 'account') {
+    \piwik_autologin\add_user($edit['piwik_autologin_userlogin'], $edit['piwik_autologin_password'], $edit['uid']);
+  }
+}
+
+/**
+ * Implementing hook_user_update.
+ *
+ * @param array $edit
+ *   Submitted values to update the user.
+ * @param array $account
+ *   User to update's account informations.
+ * @param string $category
+ *   The active category of user information being edited.
+ */
+function piwik_autologin_user_update(&$edit, $account, $category) {
+  // Editing the Piwik equivalent in the Drupal database.
+  if ($category == 'account') {
+    \piwik_autologin\edit_user($edit['piwik_autologin_userlogin'], $edit['piwik_autologin_password'], $account->uid);
+  }
+}
+
+/**
+ * Implementing hook_user_delete.
+ *
+ * @param array $account
+ *   User to delete's account informations.
+ */
+function piwik_autologin_user_delete($account) {
+  \piwik_autologin\delete_piwik_user($account->uid);
 }

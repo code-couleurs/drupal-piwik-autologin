@@ -33,12 +33,12 @@ if (!function_exists('\piwik_autologin\get_piwik_idsite')) {
  * Filling the form for module configuration.
  *
  * @param mixed $form
- *   Form to fill
+ *   Form to fill.
  * @param mixed $form_state
- *   Form state
+ *   Form state.
  *
  * @return mixed
- *   Le formulaire
+ *   The form.
  */
 function piwik_autologin_admin_form($form, &$form_state) {
   $form['piwik_url'] = array(

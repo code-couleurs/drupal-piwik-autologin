@@ -31,6 +31,14 @@ if (!function_exists('\piwik_autologin\get_piwik_idsite')) {
   require_once 'piwik_autologin.utils.inc';
 }
 
+if (!class_exists('\piwik_autologin\PiwikUser')) {
+  require_once 'piwik_autologin.piwik_user.inc';
+}
+
+if (!class_exists('\piwik_autologin\Session')) {
+  require_once 'piwik_autologin.session.inc';
+}
+
 /**
  * Configuration menu for the module.
  *
@@ -58,7 +66,7 @@ function set_module_configuration_menu(&$items) {
  */
 function set_piwik_navigation_link(&$items) {
   // Ensure that the user is allowed to show Piwik statistics.
-  if (!get_show_piwik_navigation_link()) {
+  if (!Session::getShowNaviLink()) {
     return;
   }
 
@@ -82,10 +90,13 @@ function set_piwik_navigation_link(&$items) {
 function set_logme_url($uid) {
   $piwik_user = PiwikUser::getByDrupalUserID($uid);
   $logme = ($piwik_user AND !$piwik_user->isEmpty());
-  set_show_piwik_navigation_link($logme);
+
+  // Show the Piwik navigation link in the menu (or not).
+  Session::setShowNaviLink($logme);
+
+  // Saving logme url.
   if ($logme) {
-    // Saving logme url.
-    $_SESSION['piwik_autologin_logme_url'] = $piwik_user->getLogmeURL();
+    Session::setLogmeURL($piwik_user->getLogmeURL());
   }
 }
 
@@ -105,7 +116,7 @@ function embed_piwik_iframe(&$page) {
   }
 
   // Retrieving the logme URL.
-  if (!isset($_SESSION['piwik_autologin_logme_url'])) {
+  if (!Session::getLogmeURL(NULL)) {
     /*
      * Not a fresh sign in. The automatic connexion to Piwik has already been established.
      *
@@ -117,8 +128,8 @@ function embed_piwik_iframe(&$page) {
   }
 
   // A new user has just signed in to Drupal. Let's connect him to Piwik (with the logme feature).
-  $logme_url = $_SESSION['piwik_autologin_logme_url'];
-  unset($_SESSION['piwik_autologin_logme_url']);
+  $logme_url = Session::getLogmeURL();
+  Session::delLogmeURL();
 
   // The theme system might not yet be initialized. We need $theme.
   drupal_theme_initialize();
@@ -201,4 +212,105 @@ function uninstall_piwik_autologin() {
   // Delete module configuration.
   variable_del('piwik_autologin_piwik_url');
   variable_del('piwik_autologin_idsite');
+}
+
+/**
+ * Adding fields to a user form in order to administrate Piwik users parameters.
+ *
+ * @param array $form
+ *   The form where fields will be added.
+ * @param string $default_userlogin
+ *   Userlogin value. It is empty by default.
+ */
+function add_piwik_user_fields(&$form, $default_userlogin = '') {
+  $form['piwik_autologin_userlogin'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Piwik user login',
+    '#description' => 'User login of a Piwik equivalent who should be able to show site statistics on Piwik (at least). Ensure that this user was at least granted the right to show statistics on Piwik.',
+    '#width' => 100,
+    '#required' => FALSE,
+    '#default_value' => $default_userlogin,
+  );
+
+  $form['piwik_autologin_password'] = array(
+    '#type' => 'password',
+    '#title' => 'Piwik password',
+    '#description' => 'Piwik equivalent\'s password on Piwik.',
+    '#width' => 100,
+    '#required' => FALSE,
+    '#default_value' => '',
+  );
+}
+
+/**
+ * Adding a Piwik equivalent to the Drupal Database.
+ *
+ * @param string $userlogin
+ *   User's login on Piwik.
+ * @param string $clear_password
+ *   User's clear password on Piwik.
+ * @param int $uid
+ *   Drupal user ID
+ */
+function add_user($userlogin, $clear_password, $uid) {
+  $piwik_user = new PiwikUser($userlogin, $clear_password, $uid, 0, TRUE);
+  !$piwik_user->isEmpty() AND $piwik_user->insert();
+}
+
+/**
+ * Edit Piwik user datas while editing a Drupal user.
+ *
+ * @param array $form
+ *   Form which will receive additional fields.
+ * @param int $drupal_uid
+ *   Drupal user ID.
+ */
+function edit_piwik_user_fields(&$form, $drupal_uid) {
+  $userlogin = PiwikUser::getUserloginByDrupalUID(intval($drupal_uid));
+  if (is_null($userlogin)) {
+    $userlogin = '';
+  }
+
+  add_piwik_user_fields($form, $userlogin);
+}
+
+/**
+ * Adding a Piwik equivalent to the Drupal Database.
+ *
+ * @param string $userlogin
+ *   User's login on Piwik.
+ * @param string $clear_password
+ *   User's clear password on Piwik.
+ * @param int $uid
+ *   Drupal user ID
+ */
+function edit_user($userlogin, $clear_password, $uid) {
+  $piwik_user = PiwikUser::getByDrupalUserID($uid);
+  $empty_userlogin = in_array($userlogin, array(NULL, ''));
+
+  if (is_null($piwik_user)) {
+    // Perhaps a new user, who knows?
+    !$empty_userlogin AND add_user($userlogin, $clear_password, $uid);
+  }
+  elseif ($empty_userlogin) {
+    // No login => no more Piwik equivalent. Delete it.
+    $piwik_user->delete();
+  }
+  else {
+    // Classic update.
+    $piwik_user->setUserlogin($userlogin);
+    !empty($clear_password) AND $piwik_user->setMD5Password($clear_password, TRUE);
+    $piwik_user->update();
+  }
+}
+
+/**
+ * Deleting a Piwik equivalent.
+ *
+ * @param int $uid
+ *   Drupal user ID.
+ */
+function delete_piwik_user($uid) {
+  $piwik_user = PiwikUser::getByDrupalUserID($uid);
+  !is_null($piwik_user) AND $piwik_user->delete();
 }
