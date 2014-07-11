@@ -120,16 +120,18 @@ function embed_piwik_iframe(&$page) {
   // Retrieving the logme URL.
   if (!Session::getLogmeURL(NULL)) {
     /*
-     * Not a fresh sign in. The automatic connexion to Piwik has already been established.
+     * Not a fresh sign in. The automatic connexion to Piwik has already been
+     * established.
      *
      * No need to go further for two reasons:
-     * 1°) A logme URL would force a reconnection to Piwik each time the user (re)loads a page. Quite noisy, isn't it?
+     * 1°) A logme URL would force a reconnection to Piwik each time the user
+     *     (re)loads a page. Quite noisy, isn't it?
      * 2°) Security concerns: no need to give the Piwik URL to curious users.
      */
     return;
   }
 
-  // A new user has just signed in to Drupal. Let's connect him to Piwik (with the logme feature).
+  // A new user has just signed in to Drupal. Let's connect him to Piwik.
   $logme_url = Session::getLogmeURL();
   Session::delLogmeURL();
 
@@ -151,7 +153,7 @@ function embed_piwik_iframe(&$page) {
   // Creating the hidden iframe with the logme URL.
   $iframe = sprintf("<iframe src=\"%s\" style=\"display: none;\"></iframe>", $logme_url);
 
-  // Creating the block with the iframe and put it in the selected region of the page.
+  // Creating a block with the iframe & put it in the selected region.
   $page[$region]['piwik_autologin_block'] = array('#markup' => $iframe);
 }
 

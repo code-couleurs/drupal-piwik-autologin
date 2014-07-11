@@ -52,7 +52,7 @@ function set_piwik_url($new_url) {
 }
 
 /**
- * Retrieving the Website ID of the site on the Piwik install which tracks the site.
+ * Retrieving the Website ID of the site on the Piwik install tracking the site.
  *
  * @return int
  *   The corrstonding website ID.
@@ -62,7 +62,7 @@ function get_piwik_idsite() {
 }
 
 /**
- * Setting a new value for the Website ID of the site on the Piwik install which tracks the site.
+ * New value for the Website ID on the Piwik install tracking the site.
  *
  * @return int
  *   The new website ID.

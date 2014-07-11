@@ -32,7 +32,7 @@ namespace piwik_autologin;
  */
 class Session {
   /**
-   * Creating the $_SESSION['piwik_autologin'] array to store Piwik Autologin's session variables.
+   * Creating the array to store Piwik Autologin's session variables.
    */
   protected static function initSession() {
     !isset($_SESSION['piwik_autologin']) AND $_SESSION['piwik_autologin'] = array();
@@ -45,7 +45,8 @@ class Session {
    *   A default value to return if the URL is not stored in the session.
    *
    * @return mixed
-   *   A string with the URL if the logme URL is stored in the session, $default_url otherwise.
+   *   A string with the URL if the logme URL is stored in the session,
+   *   $default_url otherwise.
    */
   public static function getLogmeURL($default_url = NULL) {
     static::initSession();
@@ -82,11 +83,11 @@ class Session {
   }
 
   /**
-   * Setting a new value for determining if the link to Piwik has to be shown in the navigation menu.
+   * Determining again if the link to Piwik is shown in the navigation menu.
    *
    * @param bool $new_show_navi_link
-   *   New value for showing the link to Piwik in the navigation menu. TRUE if the
-   *   link has to be shown, FALSE otherwise.
+   *   New value for showing the link to Piwik in the navigation menu. TRUE if
+   *   the link has to be shown, FALSE otherwise.
    */
   public static function setShowNaviLink($new_show_navi_link) {
     static::initSession();

@@ -28,21 +28,21 @@
 require_once 'piwik_autologin.backend.inc';
 
 /**
- * Implementing hook_schema.
+ * Implements hook_schema().
  */
 function piwik_autologin_schema() {
   return \piwik_autologin\create_piwik_autologin_db_schema();
 }
 
 /**
- * Implementing hook_modules_disabled.
+ * Implements hook_modules_disabled().
  */
 function piwik_autologin_modules_disabled() {
   \piwik_autologin\Session::erase();
 }
 
 /**
- * Implementing hook_uninstall.
+ * Implements hook_uninstall().
  */
 function piwik_autologin_uninstall() {
   \piwik_autologin\uninstall_piwik_autologin();
