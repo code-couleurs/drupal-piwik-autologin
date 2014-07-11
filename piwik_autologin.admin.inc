@@ -43,8 +43,8 @@ if (!function_exists('\piwik_autologin\get_piwik_idsite')) {
 function piwik_autologin_admin_form($form, &$form_state) {
   $form['piwik_url'] = array(
     '#type' => 'textfield',
-    '#title' => 'Piwik URL',
-    '#description' => 'URL of the Piwik installation which tracks the website.',
+    '#title' => t('Piwik URL'),
+    '#description' => t('URL of the Piwik installation which tracks the website.'),
     '#default_value' => \piwik_autologin\get_piwik_url(),
     '#size' => 50,
     '#required' => TRUE,
@@ -52,8 +52,8 @@ function piwik_autologin_admin_form($form, &$form_state) {
 
   $form['idsite'] = array(
     '#type' => 'textfield',
-    '#title' => 'Website ID',
-    '#description' => 'Website ID of the site on the Piwik installation which tracks the website.',
+    '#title' => t('Website ID'),
+    '#description' => t('Website ID of the site on the Piwik installation which tracks the website.'),
     '#default_value' => \piwik_autologin\get_piwik_idsite(),
     '#size' => 50,
     '#required' => TRUE,
@@ -61,7 +61,7 @@ function piwik_autologin_admin_form($form, &$form_state) {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => 'Update',
+    '#value' => t('Update'),
     '#submit' => array('piwik_autologin_admin_submit'),
   );
 
@@ -81,13 +81,13 @@ function piwik_autologin_admin_submit($form, &$form_state) {
 
   // Store Piwik's URL.
   if (!isset($form_state['values']['piwik_url'])) {
-    $error_messages[] = 'Cannot retrieve the Piwik URL';
+    $error_messages[] = t('Cannot retrieve the Piwik URL');
   }
   elseif (filter_var($form_state['values']['piwik_url'], FILTER_VALIDATE_URL)) {
     \piwik_autologin\set_piwik_url($form_state['values']['piwik_url']);
   }
   else {
-    $error_messages[] = sprintf("%s is not a valid URL.", $form_state['values']['piwik_url']);
+    $error_messages[] = sprintf(t("%s is not a valid URL."), $form_state['values']['piwik_url']);
   }
 
   // Store website ID on Piwik.
@@ -95,7 +95,7 @@ function piwik_autologin_admin_submit($form, &$form_state) {
     \piwik_autologin\set_piwik_idsite($form_state['values']['idsite']);
   }
   else {
-    $error_messages[] = 'Website ID on Piwik has to be an integer value.';
+    $error_messages[] = t('Website ID on Piwik has to be an integer value.');
   }
 
   if (count($error_messages) > 0) {
@@ -107,6 +107,6 @@ function piwik_autologin_admin_submit($form, &$form_state) {
     drupal_set_message("<ul>$formatted_messages</ul>", 'error');
   }
   else {
-    drupal_set_message('Piwik Autologin configuration was updated.', 'status');
+    drupal_set_message(t('Piwik Autologin configuration was updated.'), 'status');
   }
 }

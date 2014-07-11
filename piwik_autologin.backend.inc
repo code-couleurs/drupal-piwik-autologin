@@ -48,8 +48,8 @@ if (!class_exists('\piwik_autologin\Session')) {
 function set_module_configuration_menu(&$items) {
   // Configuration menu.
   $items['admin/config/piwik_autologin'] = array(
-    'title' => 'Piwik Autologin Configuration',
-    'description' => 'Configuring Piwik Autologin',
+    'title' => t('Piwik Autologin Configuration'),
+    'description' => t('Configuring Piwik Autologin'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('piwik_autologin_admin_form'),
     'access arguments' => array('administer site configuration'),
@@ -72,8 +72,8 @@ function set_piwik_navigation_link(&$items) {
 
   // Piwik navigation menu.
   $items['navigation/piwik'] = array(
-    'title' => 'Piwik',
-    'description' => 'Show the website statistics on Piwik',
+    'title' => t('Piwik'),
+    'description' => t('Show the website statistics on Piwik'),
     'page callback' => '\piwik_autologin\go_to_piwik',
     'access callback' => TRUE,
     'menu_name' => 'navigation',
@@ -160,7 +160,7 @@ function create_piwik_autologin_db_schema() {
   $table_name = 'piwik_autologin_piwik_users';
 
   $schema[$table_name] = array(
-    'description' => 'Piwik equivalents of Drupal users',
+    'description' => 'Piwik equivalents of Drupal users'),
     'fields' => array(
       'id' => array(
         'description' => 'Primary key',
@@ -225,8 +225,8 @@ function uninstall_piwik_autologin() {
 function add_piwik_user_fields(&$form, $default_userlogin = '') {
   $form['piwik_autologin_userlogin'] = array(
     '#type' => 'textfield',
-    '#title' => 'Piwik user login',
-    '#description' => 'User login of a Piwik equivalent who should be able to show site statistics on Piwik (at least). Ensure that this user was at least granted the right to show statistics on Piwik.',
+    '#title' => t('Piwik user login'),
+    '#description' => t('User login of a Piwik equivalent who should be able to show site statistics on Piwik (at least). Ensure that this user was at least granted the right to show statistics on Piwik.'),
     '#width' => 100,
     '#required' => FALSE,
     '#default_value' => $default_userlogin,
@@ -234,8 +234,8 @@ function add_piwik_user_fields(&$form, $default_userlogin = '') {
 
   $form['piwik_autologin_password'] = array(
     '#type' => 'password',
-    '#title' => 'Piwik password',
-    '#description' => 'Piwik equivalent\'s password on Piwik.',
+    '#title' => t('Piwik password'),
+    '#description' => t('Piwik equivalent\'s password on Piwik.'),
     '#width' => 100,
     '#required' => FALSE,
     '#default_value' => '',
