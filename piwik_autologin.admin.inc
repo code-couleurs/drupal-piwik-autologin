@@ -87,7 +87,7 @@ function piwik_autologin_admin_submit($form, &$form_state) {
     \piwik_autologin\set_piwik_url($form_state['values']['piwik_url']);
   }
   else {
-    $error_messages[] = sprintf(t("%s is not a valid URL."), $form_state['values']['piwik_url']);
+    $error_messages[] = sprintf(t("@url is not a valid URL.", array('@url' => $form_state['values']['piwik_url'])));
   }
 
   // Store website ID on Piwik.
@@ -104,7 +104,7 @@ function piwik_autologin_admin_submit($form, &$form_state) {
       $formatted_messages .= "<li>$err_msg</li>";
     }
 
-    drupal_set_message("<ul>$formatted_messages</ul>", 'error');
+    drupal_set_message(filter_xss("<ul>$formatted_messages</ul>"), 'error');
   }
   else {
     drupal_set_message(t('Piwik Autologin configuration was updated.'), 'status');

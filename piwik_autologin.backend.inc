@@ -47,9 +47,11 @@ if (!class_exists('\piwik_autologin\Session')) {
  */
 function set_module_configuration_menu(&$items) {
   // Configuration menu.
+  $menu_title = t('Piwik Autologin Configuration');
+  $menu_desc = t('Configuring Piwik Autologin');
   $items['admin/config/piwik_autologin'] = array(
-    'title' => t('Piwik Autologin Configuration'),
-    'description' => t('Configuring Piwik Autologin'),
+    'title' => $menu_title,
+    'description' => $menu_desc,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('piwik_autologin_admin_form'),
     'access arguments' => array('administer site configuration'),
@@ -194,7 +196,7 @@ function create_piwik_autologin_db_schema() {
       'drupal_uid' => array(
         'table' => 'users',
         'columns' => array('uid' => 'uid'),
-      )
+      ),
     ),
     'unique key' => array(
       'unique_piwik_user' => array('userlogin'),
@@ -235,7 +237,7 @@ function add_piwik_user_fields(&$form, $default_userlogin = '') {
   $form['piwik_autologin_password'] = array(
     '#type' => 'password',
     '#title' => t('Piwik password'),
-    '#description' => t('Piwik equivalent\'s password on Piwik.'),
+    '#description' => t("Piwik equivalent's password on Piwik."),
     '#width' => 100,
     '#required' => FALSE,
     '#default_value' => '',
