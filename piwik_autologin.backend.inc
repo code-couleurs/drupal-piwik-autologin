@@ -160,7 +160,7 @@ function create_piwik_autologin_db_schema() {
   $table_name = 'piwik_autologin_piwik_users';
 
   $schema[$table_name] = array(
-    'description' => 'Piwik equivalents of Drupal users'),
+    'description' => 'Piwik equivalents of Drupal users',
     'fields' => array(
       'id' => array(
         'description' => 'Primary key',
