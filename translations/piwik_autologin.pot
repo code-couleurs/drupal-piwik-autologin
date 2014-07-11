@@ -1,22 +1,17 @@
-# $Id: piwik_autologin.pot,v 1.1.4.7 2009/04/04 09:14:49 hass Exp $
+# $Id$
 #
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  piwik_autologin.admin.inc,v 7.28 2014/07/11 15:00:00 ducher
-#  piwik_autologin.backend.inc,v 7.28 2014/07/11 15:00:00 ducher
-#  piwik_autologin.utils.inc,v 7.28 2014/07/11 15:00:00 ducher
-#  piwik_autologin.piwik_user.inc,v 7.28 2014/07/11 15:00:00 ducher
-#  piwik_autologin.session.inc,v 7.28 2014/07/11 15:00:00 ducher
-#  piwik_autologin.info,v 7.28 2014/07/11 15:00:00 ducher
-#  piwik_autologin.install,v 7.28 2014/07/11 15:00:00 ducher
-#  piwik_autologin.module,v 7.28 2014/07/11 15:00:00 ducher
+#  piwik_autologin.admin.inc: n/a
+#  piwik_autologin.backend.inc: n/a
+#  piwik_autologin.info: n/a
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-04-04 11:11+0200\n"
+"POT-Creation-Date: 2014-07-11 15:37+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -25,16 +20,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: piwik_autologin.info:24
-msgid "Piwik Autologin is a Drupal module which logs you instantly into Piwik when you log into Drupal."
-msgstr ""
-
 #: piwik_autologin.admin.inc:46
 msgid "Piwik URL"
 msgstr ""
 
 #: piwik_autologin.admin.inc:47
-
 msgid "URL of the Piwik installation which tracks the website."
 msgstr ""
 
@@ -54,7 +44,7 @@ msgstr ""
 msgid "Cannot retrieve the Piwik URL"
 msgstr ""
 
-#: piwik_autologin.admin.inc:88
+#: piwik_autologin.admin.inc:90
 msgid "@url is not a valid URL."
 msgstr ""
 
@@ -66,34 +56,47 @@ msgstr ""
 msgid "Piwik Autologin configuration was updated."
 msgstr ""
 
-#: piwik_autologin.backend.inc:51
+#: piwik_autologin.backend.inc:50
 msgid "Piwik Autologin Configuration"
 msgstr ""
 
-#: piwik_autologin.backend.inc:52
+#: piwik_autologin.backend.inc:51
 msgid "Configuring Piwik Autologin"
 msgstr ""
 
-#: piwik_autologin.backend.inc:75
+#: piwik_autologin.backend.inc:77
 msgid "Piwik"
 msgstr ""
 
-#: piwik_autologin.backend.inc:76
+#: piwik_autologin.backend.inc:78
 msgid "Show the website statistics on Piwik"
 msgstr ""
 
-#: piwik_autologin.backend.inc:228
+#: piwik_autologin.backend.inc:230
 msgid "Piwik user login"
 msgstr ""
 
-#: piwik_autologin.backend.inc:229
-msgid "User login of a Piwik equivalent on the Piwik installation which tracks the website. Ensure that this user was at least granted the right to show statistics on Piwik and that it is not a Piwik superuser."
+#: piwik_autologin.backend.inc:231
+msgid "User login of a Piwik equivalent who should be able to show site statistics on Piwik (at least). Ensure that this user was at least granted the right to show statistics on Piwik."
 msgstr ""
 
-#: piwik_autologin.backend.inc:237
+#: piwik_autologin.backend.inc:239
 msgid "Piwik password"
 msgstr ""
 
-#: piwik_autologin.backend.inc:238
+#: piwik_autologin.backend.inc:240
 msgid "Piwik equivalent's password on Piwik."
 msgstr ""
+
+#: piwik_autologin.info:0
+msgid "Piwik Autologin"
+msgstr ""
+
+#: piwik_autologin.info:0
+msgid "Piwik Autologin is a Drupal module which logs you instantly into Piwik when you log into Drupal."
+msgstr ""
+
+#: piwik_autologin.info:0
+msgid "Login"
+msgstr ""
+

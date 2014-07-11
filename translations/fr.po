@@ -1,19 +1,17 @@
-# $Id: piwik_autologin.pot,v 1.1.4.7 2009/04/04 09:14:49 hass Exp $
+# $Id$
 #
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  potx-cli.php,v 1.1.2.6.4.4 2008/10/13 21:55:18 goba
-#  potx.inc,v 1.1.2.17.2.7.2.19 2009/04/02 11:01:54 goba
-#  potx.info,v 1.1.2.3.2.2.2.1 2009/04/02 11:05:29 goba
-#  potx.install,v 1.1.2.1 2008/09/25 06:49:33 goba
-#  potx.module,v 1.1.2.12.2.2.2.10 2009/03/13 10:13:14 goba
+#  piwik_autologin.admin.inc: n/a
+#  piwik_autologin.backend.inc: n/a
+#  piwik_autologin.info: n/a
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Piwik Autologin 7.28\n"
-"POT-Creation-Date: 2009-04-04 11:11+0200\n"
-"PO-Revision-Date: 2014-07-11 15:04+0100\n"
+"Project-Id-Version: Piwik Autologin\n"
+"POT-Creation-Date: 2014-07-11 15:37+0200\n"
+"PO-Revision-Date: 2014-07-11 15:44+0100\n"
 "Last-Translator: Romain Ducher <r.ducher@agence-codecouleurs.fr>\n"
 "Language-Team: Code Couleurs <contact@agence-codecouleurs.fr>\n"
 "MIME-Version: 1.0\n"
@@ -22,14 +20,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 "X-Generator: Poedit 1.5.4\n"
 "Language: fr\n"
-
-#: piwik_autologin.info:24
-msgid ""
-"Piwik Autologin is a Drupal module which logs you instantly into Piwik when "
-"you log into Drupal."
-msgstr ""
-"Piwik Autologin est un module Drupal qui permet de vous connecter "
-"instantanément à Piwik quand vous vous connectez à Drupal. "
 
 #: piwik_autologin.admin.inc:46
 msgid "Piwik URL"
@@ -56,7 +46,7 @@ msgstr "Mettre à jour"
 msgid "Cannot retrieve the Piwik URL"
 msgstr "Impossible de retrouver l'URL de Piwik"
 
-#: piwik_autologin.admin.inc:88
+#: piwik_autologin.admin.inc:90
 msgid "@url is not a valid URL."
 msgstr "@url n'est pas une URL valide."
 
@@ -68,40 +58,53 @@ msgstr "L'ID du site sur Piwik doit être une valeur entière."
 msgid "Piwik Autologin configuration was updated."
 msgstr "La configuration de Piwik Autologin a été mise à jour."
 
-#: piwik_autologin.backend.inc:51
+#: piwik_autologin.backend.inc:50
 msgid "Piwik Autologin Configuration"
 msgstr "Configuration de Piwik Autologin"
 
-#: piwik_autologin.backend.inc:52
+#: piwik_autologin.backend.inc:51
 msgid "Configuring Piwik Autologin"
 msgstr "Configurer Piwik Autologin"
 
-#: piwik_autologin.backend.inc:75
+#: piwik_autologin.backend.inc:77
 msgid "Piwik"
 msgstr "Piwik"
 
-#: piwik_autologin.backend.inc:76
+#: piwik_autologin.backend.inc:78
 msgid "Show the website statistics on Piwik"
 msgstr "Voir les statistiques du site sur Piwik"
 
-#: piwik_autologin.backend.inc:228
+#: piwik_autologin.backend.inc:230
 msgid "Piwik user login"
 msgstr "Nom d'utilisateur Piwik"
 
-#: piwik_autologin.backend.inc:229
-msgid ""
-"User login of a Piwik equivalent on the Piwik installation which tracks the "
-"website. Ensure that this user was at least granted the right to show "
-"statistics on Piwik and that it is not a Piwik superuser."
+#: piwik_autologin.backend.inc:231
+msgid "User login of a Piwik equivalent on the Piwik installation which tracks the website. Ensure that this user was at least granted the right to show statistics on Piwik."
 msgstr ""
 "Nom d'utilisateur d'un pendant sur l'installation Piwik surveillant le site. "
 "Assurez-vous que cet utilisateur ait au moins le droit de consulter les "
 "statistiques du site sur Piwik et qu'il ne soit pas un super utilisateur."
 
-#: piwik_autologin.backend.inc:237
+#: piwik_autologin.backend.inc:239
 msgid "Piwik password"
 msgstr "Mot de passe Piwik"
 
-#: piwik_autologin.backend.inc:238
+#: piwik_autologin.backend.inc:240
 msgid "Piwik equivalent's password on Piwik."
 msgstr "Mot de passe de l'utilisateur sur Piwik."
+
+#: piwik_autologin.info:0
+msgid "Piwik Autologin"
+msgstr "Piwik Autologin"
+
+#: piwik_autologin.info:0
+msgid ""
+"Piwik Autologin is a Drupal module which logs you instantly into Piwik when "
+"you log into Drupal."
+msgstr ""
+"Piwik Autologin est un module Drupal qui permet de vous connecter "
+"instantanément à Piwik quand vous vous connectez à Drupal. "
+
+#: piwik_autologin.info:0
+msgid "Login"
+msgstr "Connexion"
